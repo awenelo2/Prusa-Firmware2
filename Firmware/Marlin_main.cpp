@@ -9511,6 +9511,11 @@ if(0){
 */
   eFilamentAction=FilamentAction::AutoLoad;
   bFilamentFirstRun=false;
+  if (is_waiting_load() == true) {
+	  menu_goto(lcd_status_screen, 0, false, true);
+	  menu_depth = 0;
+    not_waiting();
+  }
   if(target_temperature[0]>=EXTRUDE_MINTEMP) {
     bFilamentPreheatState=true;
 //                                   mFilamentItem(target_temperature[0],target_temperature_bed);

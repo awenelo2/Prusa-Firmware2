@@ -330,7 +330,9 @@ uint8_t menu_item_function_E(const Sheet &sheet, menu_func_t func)
 }
 
 uint8_t menu_item_back_P(const char* str)
-{
+{	if (is_waiting_load() == true) {
+		not_waiting();
+	}
 	if (menu_item == menu_line)
 	{
 		if (lcd_draw_update) menu_draw_item_puts_P(LCD_STR_UPLEVEL[0], str);

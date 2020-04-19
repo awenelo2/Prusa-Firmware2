@@ -83,6 +83,7 @@ static uint8_t lcd_commands_step = 0;
 CustomMsg custom_message_type = CustomMsg::Status;
 unsigned int custom_message_state = 0;
 
+bool lcd_waiting_load = false;
 
 bool isPrintPaused = false;
 uint8_t farm_mode = 0;
@@ -2782,15 +2783,67 @@ void show_preheat_nozzle_warning()
     lcd_clear();
 }
 
+bool lcd_load_filament_check() {
+	eFilamentAction = FilamentAction::None;
+	if(digitalRead(IR_SENSOR_PIN) == 0) {
+		bool clean = lcd_show_fullscreen_message_yes_no_and_wait_P(_T(MSG_FILAMENT_CLEAN), false, true);
+		if (clean) {
+			return true;
+		} else {
+			load_filament_final_feed();
+			return false;
+		}
+	} else {
+		bool insert = lcd_show_fullscreen_message_yes_no_and_wait_P(_T(MSG_FILAMENT_NOT_DETECTED), false, true);
+		if (insert) {
+			lcd_clear();
+			lcd_set_cursor(0, 1);
+			lcd_puts_P(MSG_CHECK);// Please check
+			lcd_set_cursor(0, 2);
+			lcd_puts_P(MSG_FSENSOR);// Fil. sensor
+			lcd_wait_for_click();
+		} else {
+			lcd_clear();
+			lcd_waiting_load = true;
+			menu_goto(lcd_insert_filament_menu, 1, true, true);
+		}
+		return true;
+	}
+}
+	
+static void lcd_insert_filament_menu() {
+			MENU_BEGIN();
+			MENU_ITEM_SUBMENU_P(_T(MSG_PLEASE_INSERT), go_to_status);
+			MENU_ITEM_SUBMENU_P(_T(MSG_FILAMENT_AND_TRY), go_to_status);
+			MENU_ITEM_SUBMENU_P(_T(MSG_AGAIN), go_to_status);
+			MENU_ITEM_SUBMENU_P(_T(MSG_EXIT), go_to_status);
+			MENU_END();
+}
+
+bool is_waiting_load() {
+	if (lcd_waiting_load){
+		return true;
+	} else {
+		return false;
+	}
+}
+
+void not_waiting() {
+	lcd_waiting_load = false;
+}
+
+void go_to_status() {
+	menu_goto(lcd_status_screen, 0, false, true);
+}
+
 void lcd_load_filament_color_check()
 {
-	bool clean = lcd_show_fullscreen_message_yes_no_and_wait_P(_T(MSG_FILAMENT_CLEAN), false, true);
-	while (!clean) {
+	bool exit = lcd_load_filament_check();
+	while (!exit) {
 		lcd_update_enable(true);
 		lcd_update(2);
-		load_filament_final_feed();
 		st_synchronize();
-		clean = lcd_show_fullscreen_message_yes_no_and_wait_P(_T(MSG_FILAMENT_CLEAN), false, true);
+		exit = lcd_load_filament_check();
 	}
 }
 

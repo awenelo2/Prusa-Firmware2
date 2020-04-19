@@ -138,6 +138,12 @@ extern const char MSG_TIMEOUT[];
 extern const char MSG_BRIGHT[];
 extern const char MSG_DIM[];
 extern const char MSG_AUTO[];
+extern const char MSG_FILAMENT_NOT_DETECTED[];
+extern const char MSG_PLEASE_INSERT[];
+extern const char MSG_EXIT[];
+extern const char MSG_CHECK[];
+extern const char MSG_FILAMENT_AND_TRY[];
+extern const char MSG_AGAIN[];
 
 //not internationalized messages
 extern const char MSG_BROWNOUT_RESET[];

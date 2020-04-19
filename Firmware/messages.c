@@ -18,6 +18,7 @@ const char MSG_BED_LEVELING_FAILED_POINT_LOW[] PROGMEM_I1 = ISTR("Bed leveling f
 const char MSG_BED_SKEW_OFFSET_DETECTION_FITTING_FAILED[] PROGMEM_I1 = ISTR("XYZ calibration failed. Please consult the manual."); ////c=20 r=8
 const char MSG_CALIBRATE_Z_AUTO[] PROGMEM_I1 = ISTR("Calibrating Z"); ////c=20 r=2
 const char MSG_CARD_MENU[] PROGMEM_I1 = ISTR("Print from SD"); ////
+const char MSG_CHECK[] PROGMEM_I1 = ISTR("Please check"); ////c=12
 const char MSG_CONFIRM_NOZZLE_CLEAN[] PROGMEM_I1 = ISTR("Please clean the nozzle for calibration. Click when done."); ////c=20 r=8
 const char MSG_COOLDOWN[] PROGMEM_I1 = ISTR("Cooldown"); ////
 const char MSG_CRASH_DETECTED[] PROGMEM_I1 = ISTR("Crash detected."); ////c=20 r=1
@@ -31,6 +32,7 @@ const char MSG_FILAMENT_LOADING_T0[] PROGMEM_I1 = ISTR("Insert filament into ext
 const char MSG_FILAMENT_LOADING_T1[] PROGMEM_I1 = ISTR("Insert filament into extruder 2. Click when done."); ////c=20 r=4
 const char MSG_FILAMENT_LOADING_T2[] PROGMEM_I1 = ISTR("Insert filament into extruder 3. Click when done."); ////c=20 r=4
 const char MSG_FILAMENT_LOADING_T3[] PROGMEM_I1 = ISTR("Insert filament into extruder 4. Click when done."); ////c=20 r=4
+const char MSG_FILAMENT_NOT_DETECTED[] PROGMEM_I1 = ISTR("No filament detected Is filament inserted?"); ////c=20 r=2
 const char MSG_FILAMENTCHANGE[] PROGMEM_I1 = ISTR("Change filament"); ////
 const char MSG_FIND_BED_OFFSET_AND_SKEW_LINE1[] PROGMEM_I1 = ISTR("Searching bed calibration point"); ////c=60
 const char MSG_FIND_BED_OFFSET_AND_SKEW_LINE2[] PROGMEM_I1 = ISTR(" of 4"); ////c=14
@@ -42,6 +44,8 @@ const char MSG_FSENSOR[] PROGMEM_I1 = ISTR("Fil. sensor"); ////
 const char MSG_HEATING[] PROGMEM_I1 = ISTR("Heating"); ////
 const char MSG_HEATING_COMPLETE[] PROGMEM_I1 = ISTR("Heating done."); ////c=20
 const char MSG_HOMEYZ[] PROGMEM_I1 = ISTR("Calibrate Z"); ////
+const char MSG_PLEASE_INSERT[] PROGMEM_I1 = ISTR("Please insert"); //// c=13
+const char MSG_EXIT[] PROGMEM_I1 = ISTR("Click to exit"); //// c=6
 const char MSG_CHOOSE_EXTRUDER[] PROGMEM_I1 = ISTR("Choose extruder:"); ////c=20 r=1
 const char MSG_CHOOSE_FILAMENT[] PROGMEM_I1 = ISTR("Choose filament:"); ////c=20 r=1
 const char MSG_LOAD_FILAMENT[] PROGMEM_I1 = ISTR("Load filament"); //// Number 1 to 5 is added behind text e.g. "Load filament 1" c=16
@@ -80,6 +84,8 @@ const char MSG_SELFTEST_MOTOR[] PROGMEM_I1 = ISTR("Motor"); ////
 const char MSG_SELFTEST_FILAMENT_SENSOR[] PROGMEM_I1 = ISTR("Filament sensor"); ////c=17
 const char MSG_SELFTEST_WIRINGERROR[] PROGMEM_I1 = ISTR("Wiring error"); ////
 const char MSG_SETTINGS[] PROGMEM_I1 = ISTR("Settings"); ////
+const char MSG_AGAIN[] PROGMEM_I1 = ISTR("again."); ////
+const char MSG_FILAMENT_AND_TRY[] PROGMEM_I1 = ISTR("filament and try"); ////
 const char MSG_HW_SETUP[] PROGMEM_I1 = ISTR("HW Setup"); ////
 const char MSG_MODE[] PROGMEM_I1 = ISTR("Mode"); ////
 const char MSG_HIGH_POWER[] PROGMEM_I1 = ISTR("High power"); ////
