@@ -2813,10 +2813,10 @@ bool lcd_load_filament_check() {
 	
 static void lcd_insert_filament_menu() {
 			MENU_BEGIN();
-			MENU_ITEM_SUBMENU_P(_T(MSG_PLEASE_INSERT), go_to_status);
-			MENU_ITEM_SUBMENU_P(_T(MSG_FILAMENT_AND_TRY), go_to_status);
-			MENU_ITEM_SUBMENU_P(_T(MSG_AGAIN), go_to_status);
-			MENU_ITEM_SUBMENU_P(_T(MSG_EXIT), go_to_status);
+			MENU_ITEM_SUBMENU_P(_T(MSG_PLEASE_INSERT), lcd_return_to_status);
+			MENU_ITEM_SUBMENU_P(_T(MSG_FILAMENT_AND_TRY), lcd_return_to_status);
+			MENU_ITEM_SUBMENU_P(_T(MSG_AGAIN), lcd_return_to_status);
+			MENU_ITEM_SUBMENU_P(_T(MSG_EXIT), lcd_return_to_status);
 			MENU_END();
 }
 
@@ -2830,10 +2830,6 @@ bool is_waiting_load() {
 
 void not_waiting() {
 	lcd_waiting_load = false;
-}
-
-void go_to_status() {
-	menu_goto(lcd_status_screen, 0, false, true);
 }
 
 void lcd_load_filament_color_check()
