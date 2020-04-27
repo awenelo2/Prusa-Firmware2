@@ -83,8 +83,6 @@ static uint8_t lcd_commands_step = 0;
 CustomMsg custom_message_type = CustomMsg::Status;
 unsigned int custom_message_state = 0;
 
-bool lcd_waiting_load = false;
-
 bool isPrintPaused = false;
 uint8_t farm_mode = 0;
 int farm_no = 0;
@@ -144,6 +142,8 @@ static void lcd_menu_fails_stats_mmu_print();
 static void lcd_menu_fails_stats_mmu_total();
 static void mmu_unload_filament();
 static void lcd_v2_calibration();
+static void lcd_LoadFilament();
+
 //static void lcd_menu_show_sensors_state();      // NOT static due to using inside "Marlin_main" module ("manage_inactivity()")
 
 static void mmu_fil_eject_menu();
@@ -2783,64 +2783,52 @@ void show_preheat_nozzle_warning()
     lcd_clear();
 }
 
-bool lcd_load_filament_check() {
-	eFilamentAction = FilamentAction::None;
-	if(digitalRead(IR_SENSOR_PIN) == 0) {
-		bool clean = lcd_show_fullscreen_message_yes_no_and_wait_P(_T(MSG_FILAMENT_CLEAN), false, true);
-		if (clean) {
-			return true;
-		} else {
-			load_filament_final_feed();
-			return false;
-		}
-	} else {
-		bool insert = lcd_show_fullscreen_message_yes_no_and_wait_P(_T(MSG_FILAMENT_NOT_DETECTED), false, true);
-		if (insert) {
-			lcd_clear();
-			lcd_set_cursor(0, 1);
-			lcd_puts_P(MSG_CHECK);// Please check
-			lcd_set_cursor(0, 2);
-			lcd_puts_P(MSG_FSENSOR);// Fil. sensor
-			lcd_wait_for_click();
-		} else {
-			lcd_clear();
-			lcd_waiting_load = true;
-			menu_goto(lcd_insert_filament_menu, 1, true, true);
-		}
-		return true;
-	}
-}
-	
-static void lcd_insert_filament_menu() {
-			MENU_BEGIN();
-			MENU_ITEM_SUBMENU_P(_T(MSG_PLEASE_INSERT), lcd_return_to_status);
-			MENU_ITEM_SUBMENU_P(_T(MSG_FILAMENT_AND_TRY), lcd_return_to_status);
-			MENU_ITEM_SUBMENU_P(_T(MSG_AGAIN), lcd_return_to_status);
-			MENU_ITEM_SUBMENU_P(_T(MSG_EXIT), lcd_return_to_status);
-			MENU_END();
-}
-
-bool is_waiting_load() {
-	if (lcd_waiting_load){
-		return true;
-	} else {
-		return false;
-	}
-}
-
-void not_waiting() {
-	lcd_waiting_load = false;
-}
-
-void lcd_load_filament_color_check()
-{
-	bool exit = lcd_load_filament_check();
+void lcd_load_filament_color_check() {
+	bool exit = false;
+	bool tryagain = false;
 	while (!exit) {
 		lcd_update_enable(true);
 		lcd_update(2);
 		st_synchronize();
-		exit = lcd_load_filament_check();
+		if(!fsensor_enabled||(digitalRead(IR_SENSOR_PIN) == 1)) {
+			bool clean = lcd_show_fullscreen_message_yes_no_and_wait_P(_T(MSG_FILAMENT_CLEAN), true, true);
+			if (clean) {
+				exit = true;
+			} else {
+				load_filament_final_feed();
+				exit = false;
+			}
+		} else {
+			bool insert = lcd_show_fullscreen_message_yes_no_and_wait_P(_T(MSG_FILAMENT_NOT_DETECTED), false, false);
+			if (insert) {
+				fsensor_disable(false);
+				lcd_show_fullscreen_message_and_wait_P(MSG_DISABLE_FSENSOR);
+				if (card.sdprinting) {
+					bool lpause = lcd_show_fullscreen_message_yes_no_and_wait_P(_T(MSG_PAUSE), true, false);
+					if (lpause) {
+						lcd_pause_print();
+					}
+				}
+			} else {
+				if ( moves_planned() || IS_SD_PRINTING || is_usb_printing || (lcd_commands_type == LcdCommands::Layer1Cal)) {
+					bool tryagain = true;
+				} else {
+					bool tryagain = lcd_show_fullscreen_message_yes_no_and_wait_P(_T(MSG_TRY_AGAIN), false, true);
+				}
+				if (tryagain) {
+					load_filament_final_feed();
+					exit = false;
+				}
+			}
+			exit = true;
+		}
 	}
+}
+
+static void lcd_LoadFilament()
+{
+    eFilamentAction = FilamentAction::Load;
+    preheat_or_continue();
 }
 
 #ifdef FILAMENT_SENSOR
@@ -2863,11 +2851,7 @@ static void preheat_or_continue()
     else lcd_generic_preheat_menu();
 }
 
-static void lcd_LoadFilament()
-{
-    eFilamentAction = FilamentAction::Load;
-    preheat_or_continue();
-}
+
 
 
 //! @brief Show filament used a print time

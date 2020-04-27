@@ -27,10 +27,7 @@ void lcd_setalertstatuspgm(const char* message);
 //! only update the alert message on the main status screen
 //! has no sideeffects, may be called multiple times
 void lcd_updatestatuspgm(const char *message);
-void lcd_insert_filament_menu();
-void not_waiting();
-bool is_waiting_load();
-void go_to_status();
+
 void lcd_reset_alert_level();
 uint8_t get_message_level();
 void lcd_adjust_z();

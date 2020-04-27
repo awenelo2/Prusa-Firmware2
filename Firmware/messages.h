@@ -141,9 +141,11 @@ extern const char MSG_AUTO[];
 extern const char MSG_FILAMENT_NOT_DETECTED[];
 extern const char MSG_PLEASE_INSERT[];
 extern const char MSG_EXIT[];
-extern const char MSG_CHECK[];
+extern const char MSG_DISABLE_FSENSOR[];
 extern const char MSG_FILAMENT_AND_TRY[];
 extern const char MSG_AGAIN[];
+extern const char MSG_TRY_AGAIN[];
+extern const char MSG_PAUSE[];
 
 //not internationalized messages
 extern const char MSG_BROWNOUT_RESET[];

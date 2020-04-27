@@ -3229,8 +3229,7 @@ void gcode_M701()
 		current_position[E_AXIS] += 40;
 		plan_buffer_line_curposXYZE(400 / 60, active_extruder); //fast sequence
 		st_synchronize();
-
-        raise_z_above(MIN_Z_FOR_LOAD, false);
+    raise_z_above(MIN_Z_FOR_LOAD, false);
 		current_position[E_AXIS] += 30;
 		plan_buffer_line_curposXYZE(400 / 60, active_extruder); //fast sequence
 		
@@ -9511,11 +9510,7 @@ if(0){
 */
   eFilamentAction=FilamentAction::AutoLoad;
   bFilamentFirstRun=false;
-  if (is_waiting_load() == true) {
-	  menu_goto(lcd_status_screen, 0, false, true);
-	  menu_depth = 0;
-    not_waiting();
-  }
+
   if(target_temperature[0]>=EXTRUDE_MINTEMP) {
     bFilamentPreheatState=true;
 //                                   mFilamentItem(target_temperature[0],target_temperature_bed);
