@@ -9484,10 +9484,10 @@ static uint8_t nFSCheckCount=0;
                          if(nFSCheckCount>FS_CHECK_COUNT)
                          {
                               nFSCheckCount=0;    // not necessary
-                              oFsensorPCB=ClFsensorPCB::_Rev03b;
+                              oFsensorPCB=ClFsensorPCB::_Rev04;
                               eeprom_update_byte((uint8_t*)EEPROM_FSENSOR_PCB,(uint8_t)oFsensorPCB);
                               printf_IRSensorAnalogBoardChange(true);
-                              lcd_setstatuspgm(_i("FS rev. 03b or newer"));
+                              lcd_setstatuspgm(_i("FS v0.4 or newer"));
                          }
                     }
                     else nFSCheckCount=0;
@@ -9498,29 +9498,33 @@ static uint8_t nFSCheckCount=0;
 					fsensor_autoload_check_stop();
 #endif //PAT9125
 //-//					if (degHotend0() > EXTRUDE_MINTEMP)
-if(0){
-  Sound_MakeCustom(50,1000,false);
-	loading_flag = true;
-	enquecommand_front_P((PSTR("M701")));
-} else {
-  if(IsStopped() == false){
+if(0)
+					{
+            Sound_MakeCustom(50,1000,false);
+						loading_flag = true;
+						enquecommand_front_P((PSTR("M701")));
+					}
+					else
+					{
 /*
 						lcd_update_enable(false);
 						show_preheat_nozzle_warning();
 						lcd_update_enable(true);
 */
-  eFilamentAction=FilamentAction::AutoLoad;
-  bFilamentFirstRun=false;
-  if(target_temperature[0]>=EXTRUDE_MINTEMP) {
-    bFilamentPreheatState=true;
+                              eFilamentAction=FilamentAction::AutoLoad;
+                              bFilamentFirstRun=false;
+                              if(target_temperature[0]>=EXTRUDE_MINTEMP)
+                              {
+                                   bFilamentPreheatState=true;
 //                                   mFilamentItem(target_temperature[0],target_temperature_bed);
-    menu_submenu(mFilamentItemForce);
-  } else {
-    menu_submenu(lcd_generic_preheat_menu);
-    lcd_timeoutToStatus.start();
-  }
-}
-}
+                                   menu_submenu(mFilamentItemForce);
+                              }
+                              else
+                              {
+                                   menu_submenu(lcd_generic_preheat_menu);
+                                   lcd_timeoutToStatus.start();
+                              }
+                         }
 				}
 			}
 			else
