@@ -6911,20 +6911,6 @@ static void lcd_main_menu()
   }
 #endif
 
-  if(!isPrintPaused && !IS_SD_PRINTING && !is_usb_printing && (lcd_commands_type != LcdCommands::Layer1Cal))
-  {
-    if (!farm_mode)
-    {
-        const int8_t sheet = eeprom_read_byte(&(EEPROM_Sheets_base->active_sheet));
-        const int8_t nextSheet = eeprom_next_initialized_sheet(sheet);
-        if ((nextSheet >= 0) && (sheet != nextSheet)) // show menu only if we have 2 or more sheets initialized
-        {
-            MENU_ITEM_FUNCTION_E(EEPROM_Sheets_base->s[sheet], eeprom_switch_to_next_sheet);
-        }
-    }
-  }
-
-
   if (IS_SD_PRINTING || is_usb_printing || (lcd_commands_type == LcdCommands::Layer1Cal))
   {
 	  if (farm_mode)
@@ -6965,6 +6951,20 @@ static void lcd_main_menu()
 		MENU_ITEM_SUBMENU_P(_T(MSG_UNLOAD_FILAMENT), lcd_unLoadFilament);
 	}
 	MENU_ITEM_SUBMENU_P(_T(MSG_SETTINGS), lcd_settings_menu);
+
+	if(!isPrintPaused && !IS_SD_PRINTING && !is_usb_printing && (lcd_commands_type != LcdCommands::Layer1Cal))
+  {
+    if (!farm_mode)
+    {
+        const int8_t sheet = eeprom_read_byte(&(EEPROM_Sheets_base->active_sheet));
+        const int8_t nextSheet = eeprom_next_initialized_sheet(sheet);
+        if ((nextSheet >= 0) && (sheet != nextSheet)) // show menu only if we have 2 or more sheets initialized
+        {
+            MENU_ITEM_FUNCTION_E(EEPROM_Sheets_base->s[sheet], eeprom_switch_to_next_sheet);
+        }
+    }
+  }
+
     if(!isPrintPaused) MENU_ITEM_SUBMENU_P(_T(MSG_MENU_CALIBRATION), lcd_calibration_menu);
 
   }
